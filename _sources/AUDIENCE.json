@@ -1,0 +1,14 @@
+{
+  "ages": [
+    5,
+    14
+  ],
+  "children_across_event": 50,
+  "arrival_format": "several at a time",
+  "visit_minutes": [
+    10,
+    20
+  ],
+  "emphasis": "balanced coloring, building, and games",
+  "confirmed": "2026-10-01"
+}

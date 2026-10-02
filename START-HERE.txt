@@ -1,0 +1,35 @@
+SCIENCE FRIDAY - PRINTABLE COLLECTION
+Updated 2026-10-01. 28 local PDFs, 202 pages including teacher material.
+Audience: ages 5-14, about 50 visitors across the event, 10-20 minute visits.
+
+NEW: 00-Quick-Stations-Ages-5-14.pdf
+Page 1: staffing, supplies, and first print batch.
+Pages 2-5: four station signs, each with three levels.
+Pages 6-8: mirror drawing, small Hex boards, and fractal coloring.
+Page 9: leader notes and answers.
+
+Open 00-START-HERE.html in a browser for the illustrated catalog, print ranges,
+suggested ages, supplies, source links, and a six-session plan.
+
+QUICKEST START
+Print 00-Science-Friday-Starter-Pack.pdf pages 1 and 5 for coloring and games.
+Print 02-Polyhedra-and-Folding/Mathigon-cube-net.pdf for building.
+Supplies: colored pencils, paper, scissors, glue stick or tape.
+
+STARTER PACK PAGE GUIDE
+ 1  Color a turning rosette (ages 6+)
+ 2  Square kaleidoscope (ages 7+)
+ 3  Triangular tessellation coloring (ages 6+)
+ 4  Pascal triangle: odd and even (ages 8+)
+ 5  Dots and Boxes: four boards (ages 6+)
+ 6  Sprouts: rules and play areas (ages 10+)
+ 7  Game of Life: block and blinker (ages 9+)
+ 8  Game of Life: glider (ages 9+)
+ 9  Game of Life: experiment grids (ages 9+)
+10  Leader notes and answer key (ages Leader)
+
+All local PDF links work offline. The folder categories hold unchanged source PDFs.
+The Game of Life sheets are in the starter pack, pages 7-9; answers on page 10.
+The coloring source links that failed to download are listed in the HTML catalog.
+_sources contains provenance, previews, and the editable original worksheet builder.
+_build contains verification renders and extraction files, not classroom handouts.

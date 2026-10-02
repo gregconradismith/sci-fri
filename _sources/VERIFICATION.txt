@@ -1,0 +1,10 @@
+2026-10-01 expansion
+28 local PDFs, 202 total pages including teacher notes.
+Original 125 pages previously rendered and visually reviewed; 77 added pages all rendered.
+All new source-PDF contact sheets and original-pack contact sheet reviewed.
+Original quick-pack pages 2 and 7 reviewed at full render size.
+Quick-pack text stays within horizontal page margins.
+All local catalog links resolve; downloaded PDF checksums match manifests.
+Browser checks: 26 source cards; 16 short-visit cards; search, empty results, and clear work.
+Desktop and 390px mobile catalog screenshots visually reviewed; no horizontal overflow or page errors.
+Physical folding remains untested; leader should make a sample.

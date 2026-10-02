@@ -1,0 +1,4 @@
+Print ../00-Science-Friday-Starter-Pack.pdf pages 7-9.
+Leader answer key: page 10.
+Rules: https://conwaylife.com/wiki/Rulestring
+Advanced free book (web link only): https://conwaylife.com/book/
