@@ -27,6 +27,8 @@ add('05-Orbifolds','Gould-Orbifold-Patterns-and-Matching-Cards','https://archive
 add('05-Orbifolds','Vi-Hart-Orbifold-and-Cut','https://archive.bridgesmathart.org/2013/bridges2013-635.pdf','https://archive.bridgesmathart.org/2013/bridges2013-635.html','leader / teens',45,'paper, scissors; other materials depend on extension','Leader reading about folding and cutting symmetry. Some extensions use craft knives; choose paper-and-scissors activities for children.')
 
 def download(item):
+    if 'mathscraftnz.org' in item['url']:
+        return dict(item, status='external-only')
     path=ROOT/item['file'];path.parent.mkdir(parents=True,exist_ok=True)
     if not path.exists():
         p=subprocess.run(['curl','-fLsS','--retry','1','--max-time','50',item['url'],'-o',str(path)],capture_output=True,text=True)

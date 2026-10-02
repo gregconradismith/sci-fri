@@ -7,7 +7,10 @@ ROOT=Path(__file__).resolve().parent.parent
 manifest=json.loads((ROOT/'_sources/manifest.json').read_text())
 manifest+=json.loads((ROOT/'_sources/expansion-manifest.json').read_text())
 downloaded=[r for r in manifest if r['status']=='downloaded']
+resources=[r for r in manifest if r['status'] in ('downloaded','external-only')]
 for r in downloaded:r['pages']=len(PdfReader(ROOT/r['file']).pages)
+for r in resources:
+    if r['status']=='external-only': r['pages']='See source'
 total=sum(r['pages'] for r in downloaded)+19
 pdf_count=len(downloaded)+2
 e=html.escape
@@ -39,19 +42,21 @@ def preview(stem,page=1):
     return '_sources/previews/'+target.name
 
 sections=[]
-for folder in sorted({r['file'].split('/')[0] for r in downloaded}):
+for folder in sorted({r['file'].split('/')[0] for r in resources}):
     cards=[]
-    for r in [r for r in downloaded if r['file'].startswith(folder+'/')]:
+    for r in [r for r in resources if r['file'].startswith(folder+'/')]:
         stem=Path(r['file']).stem
         title=stem.replace('Mathigon-','Mathigon: ').replace('JRMF-','JRMF: ').replace('-',' ')
         if stem=='JRMF-Frogs-and-Toads':r['preview_page']=11
         if stem=='Hampton-A-Mathematical-Coloring-Book':r['print_pages']='Art pages 2-35. Younger children: 2, 3, 11, or 31. Fractals: 24-25. Leader notes: 36-38.'
-        thumb=preview(stem,r.get('preview_page',preview_pages.get(stem,1)))
+        thumb=preview(stem,r.get('preview_page',preview_pages.get(stem,1))) if r['status']=='downloaded' else None
+        target=quote(r['file']) if thumb else r['url']
+        image_markup=f'<a href="{target}"><img src="{thumb}" alt="Preview: {e(title)}" loading="lazy"></a>' if thumb else '<p class="meta">External resource<br>Download from author</p>'
         r['print_pages']=print_pages.get(stem,r.get('print_pages','1 (whole template).'))
         quick_old={'JRMF-Map-Coloring','JRMF-Color-Triangles','JRMF-Chomp','JRMF-Sprigs','JRMF-Doodles','JRMF-Pentominoes','Math-for-Love-Games-to-Play-at-Home','Mathigon-cube-net','Mathigon-tetrahedron-net'}
         r['session']=r.get('session','Quick station: select one task; precut nets' if stem in quick_old else 'Longer / guided extension')
         quick='1' if r['session'].lower().startswith('quick') else '0'
-        cards.append(f'''<article class="card" data-quick="{quick}"><a href="{quote(r['file'])}"><img src="{thumb}" alt="Preview: {e(title)}" loading="lazy"></a><div><h3><a href="{quote(r['file'])}">{e(title)}</a></h3><p class="meta">Ages {e(r['ages'])} · full activity about {r['minutes']} min · {r['pages']} PDF pages</p><p><b>{e(r['session'])}</b></p><p>{e(r['note'])}</p><p><b>Supplies:</b> {e(r['supplies'])}</p><p><b>Print:</b> {e(r['print_pages'])}</p><a href="{e(r['source'])}">Original source</a></div></article>''')
+        cards.append(f'''<article class="card" data-quick="{quick}">{image_markup}<div><h3><a href="{target}">{e(title)}</a></h3><p class="meta">Ages {e(r['ages'])} · full activity about {r['minutes']} min · {r['pages']} PDF pages</p><p><b>{e(r['session'])}</b></p><p>{e(r['note'])}</p><p><b>Supplies:</b> {e(r['supplies'])}</p><p><b>Print:</b> {e(r['print_pages'])}</p><a href="{e(r['source'])}">Original source</a></div></article>''')
     sections.append('<section class="resource-section" id="'+folder+'"><h2>'+folder[3:].replace('-',' ')+'</h2>'+''.join(cards)+'</section>')
 
 starter_preview=preview('00-Science-Friday-Starter-Pack')
@@ -101,8 +106,9 @@ doc+='''<section class="box"><h2 style="margin-top:0">Printing and setup</h2><ul
 </main></body></html>'''
 quick_doc=(ROOT/'_sources/quick-catalog-section.html').read_text()
 doc=doc.replace('<section class="box" id="starter">',quick_doc+'<section class="box" id="starter">')
-doc=doc.replace('<footer><h3>Sources and reuse</h3>','<footer><h3>Sources and reuse</h3><p>Maths Craft NZ handouts are saved unchanged for local home/classroom use. Their resource page specifies CC BY-NC-ND 4.0 and asks that the materials not be packaged or redistributed, or their branding used for another event. Share the source links with others; these files are not included in a redistributed bundle.</p>')
+doc=doc.replace('<footer><h3>Sources and reuse</h3>','<footer><h3>Sources and reuse</h3><p>Maths Craft NZ handouts are linked at their original source and are not hosted here. Their resource page specifies CC BY-NC-ND 4.0 and asks that the materials not be packaged or redistributed, or their branding used for another event. Share the source links with others; these files are not included in a redistributed bundle.</p>')
 (ROOT/'00-START-HERE.html').write_text(doc)
+(ROOT/'index.html').write_text(doc)
 (ROOT/'START-HERE.txt').write_text(f'''SCIENCE FRIDAY - PRINTABLE COLLECTION
 Updated 2026-10-01. {pdf_count} local PDFs, {total} pages including teacher material.
 Audience: ages 5-14, about 50 visitors across the event, 10-20 minute visits.
@@ -130,7 +136,7 @@ _sources contains provenance, previews, and the editable original worksheet buil
 _build contains verification renders and extraction files, not classroom handouts.
 ''')
 (ROOT/'04-Game-of-Life/START-HERE.txt').write_text('Print ../00-Science-Friday-Starter-Pack.pdf pages 7-9.\nLeader answer key: page 10.\nRules: https://conwaylife.com/wiki/Rulestring\nAdvanced free book (web link only): https://conwaylife.com/book/\n')
-(ROOT/'_sources/catalog.json').write_text(json.dumps(downloaded,indent=2)+'\n')
+(ROOT/'_sources/catalog.json').write_text(json.dumps(resources,indent=2)+'\n')
 original=dict(file=starter,pages=10,sha256=hashlib.sha256((ROOT/starter).read_bytes()).hexdigest(),created='2026-10-01',source='_sources/build_starter_pack.py')
 (ROOT/'_sources/original-manifest.json').write_text(json.dumps(original,indent=2)+'\n')
 quickfile='00-Quick-Stations-Ages-5-14.pdf'
